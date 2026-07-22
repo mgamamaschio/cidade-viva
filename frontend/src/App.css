@@ -185,3 +185,30 @@ h1 {
   font-size: 24px;
   margin: 0;
 }
+.accessibility-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.accessibility-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #eaf3de;
+  color: #27500a;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+.accessibility-tag i {
+  font-size: 15px;
+}
+
+.section-title {
+  font-size: 15px;
+  color: #666;
+  margin: 16px 0 8px;
+}

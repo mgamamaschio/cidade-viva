@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNumber, IsNotEmpty } from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsNotEmpty, IsArray } from 'class-validator';
 
 export class CreateLocationDto {
   @IsString()
@@ -22,4 +22,9 @@ export class CreateLocationDto {
 
   @IsNumber()
   longitude: number;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  accessibilityFeatures?: string[];
 }

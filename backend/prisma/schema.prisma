@@ -13,12 +13,13 @@ datasource db {
   provider = "postgresql"
 }
 model Location {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  category    String
-  address     String
-  latitude    Float
-  longitude   Float
-  createdAt   DateTime @default(now())
+  id                    String   @id @default(uuid())
+  name                  String
+  description           String?
+  category              String
+  address               String
+  latitude              Float
+  longitude             Float
+  accessibilityFeatures String[] @default([])
+  createdAt             DateTime @default(now())
 }

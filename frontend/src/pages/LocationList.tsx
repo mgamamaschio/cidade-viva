@@ -9,6 +9,7 @@ interface Location {
   address: string;
   latitude: number;
   longitude: number;
+  accessibilityFeatures: string[];
 }
 
 function LocationList() {
@@ -93,6 +94,17 @@ function LocationList() {
                 <i className="ti ti-map-pin" aria-hidden="true"></i>
                 <span>{location.address}</span>
               </div>
+
+              {location.accessibilityFeatures.length > 0 && (
+                <div className="accessibility-tags">
+                  {location.accessibilityFeatures.map((feature) => (
+                    <span className="accessibility-tag" key={feature}>
+                      <i className="ti ti-check" aria-hidden="true"></i>
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+              )}
             </article>
           </Link>
         ))}
