@@ -6,8 +6,19 @@ import { CreateLocationDto } from './dto/create-location.dto';
 export class LocationService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll() {
-    return this.prisma.location.findMany();
+  async findAll(search?: string) {
+    if (!search) {
+      return this.prisma.location.findMany();
+    }
+
+    return this.prisma.location.findMany({
+      where: {
+        OR: [
+          { name: { contains: search, mode: 'insensitive' } },
+          { category: { contains: search, mode: 'insensitive' } },
+        ],
+      },
+    });
   }
 
   async create(data: CreateLocationDto) {

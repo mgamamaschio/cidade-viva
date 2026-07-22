@@ -13,17 +13,36 @@ interface Location {
 
 function App() {
   const [locations, setLocations] = useState<Location[]>([]);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3000/locations')
+    const url = search
+      ? `http://localhost:3000/locations?search=${encodeURIComponent(search)}`
+      : 'http://localhost:3000/locations';
+
+    fetch(url)
       .then((response) => response.json())
       .then((data) => setLocations(data));
-  }, []);
+  }, [search]);
 
   return (
     <main className="page">
       <h1>Cidade Viva</h1>
       <p className="subtitle">Locais acessíveis e sustentáveis em Salto</p>
+
+      <div className="search-box">
+        <label htmlFor="search-input" className="sr-only">
+          Buscar locais por nome ou categoria
+        </label>
+        <i className="ti ti-search" aria-hidden="true"></i>
+        <input
+          id="search-input"
+          type="text"
+          placeholder="Buscar por nome ou categoria..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
 
       <div className="location-list">
         {locations.map((location) => (
@@ -43,6 +62,10 @@ function App() {
             </div>
           </article>
         ))}
+
+        {locations.length === 0 && (
+          <p className="empty-state">Nenhum local encontrado para essa busca.</p>
+        )}
       </div>
     </main>
   );
