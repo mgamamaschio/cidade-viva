@@ -62,3 +62,8 @@ dist/
 .DS_Store
 *.log
 generated/
+# AI tooling
+.claude/
+.windsurf/
+.agents/
+skills-lock.json
