@@ -19,6 +19,8 @@ function LocationList() {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [view, setView] = useState<'list' | 'map'>('list');
+  const [loading, setLoading] = useState(true);
+const [error, setError] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost:3000/locations/categories')
@@ -26,17 +28,25 @@ function LocationList() {
       .then((data) => setCategories(data));
   }, []);
 
-  useEffect(() => {
-    const params = new URLSearchParams();
-    if (search) params.set('search', search);
-    if (selectedCategory) params.set('category', selectedCategory);
+useEffect(() => {
+  setLoading(true);
+  setError(false);
 
-    const url = `http://localhost:3000/locations?${params.toString()}`;
+  const params = new URLSearchParams();
+  if (search) params.set('search', search);
+  if (selectedCategory) params.set('category', selectedCategory);
 
-    fetch(url)
-      .then((response) => response.json())
-      .then((data) => setLocations(data));
-  }, [search, selectedCategory]);
+  const url = `http://localhost:3000/locations?${params.toString()}`;
+
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) throw new Error('Erro ao buscar locais');
+      return response.json();
+    })
+    .then((data) => setLocations(data))
+    .catch(() => setError(true))
+    .finally(() => setLoading(false));
+}, [search, selectedCategory]);
 
   return (
     <main className="page">
@@ -98,7 +108,15 @@ function LocationList() {
         </button>
       </div>
 
-      {view === 'list' && (
+{loading && <p className="status-message">Carregando locais...</p>}
+
+{error && (
+  <p className="status-message error">
+    Não foi possível carregar os locais. Verifique sua conexão e tente novamente.
+  </p>
+)}
+
+      {!loading && !error && view === 'list' && (
         <div className="location-list">
           {locations.map((location) => (
             <Link to={`/locations/${location.id}`} className="location-card-link" key={location.id}>
@@ -137,7 +155,7 @@ function LocationList() {
         </div>
       )}
 
-      {view === 'map' && (
+      {!loading && !error && view === 'map' && (
         <div className="map-wrapper">
           <MapContainer
             center={[-23.2, -47.29]}
@@ -151,10 +169,14 @@ function LocationList() {
             {locations.map((location) => (
               <Marker key={location.id} position={[location.latitude, location.longitude]}>
                 <Popup>
-                  <strong>{location.name}</strong>
-                  <br />
-                  {location.category}
-                </Popup>
+  <strong>{location.name}</strong>
+  <br />
+  {location.category}
+  <br />
+  <a href={`/locations/${location.id}`} style={{ color: '#0c447c' }}>
+    Ver detalhes
+  </a>
+</Popup>
               </Marker>
             ))}
           </MapContainer>

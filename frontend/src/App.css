@@ -245,3 +245,55 @@ h1 {
   color: #ffffff;
   border-color: #0c447c;
 }
+.status-message {
+  text-align: center;
+  font-size: 16px;
+  color: #666;
+  padding: 32px 0;
+}
+
+.status-message.error {
+  color: #a32d2d;
+}
+@media (max-width: 600px) {
+  .page {
+    padding: 20px 16px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+  }
+
+  .location-card {
+    padding: 16px 18px;
+  }
+
+  .location-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .filter-bar {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+  }
+
+  .filter-pill {
+    flex-shrink: 0;
+  }
+
+  .view-toggle {
+    width: 100%;
+  }
+
+  .toggle-btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
