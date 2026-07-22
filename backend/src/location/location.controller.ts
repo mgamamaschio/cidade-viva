@@ -6,9 +6,17 @@ import { CreateLocationDto } from './dto/create-location.dto';
 export class LocationController {
   constructor(private locationService: LocationService) {}
 
+  @Get('categories')
+  findCategories() {
+    return this.locationService.findCategories();
+  }
+
   @Get()
-  findAll(@Query('search') search?: string) {
-    return this.locationService.findAll(search);
+  findAll(
+    @Query('search') search?: string,
+    @Query('category') category?: string,
+  ) {
+    return this.locationService.findAll(search, category);
   }
 
   @Post()

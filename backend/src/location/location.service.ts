@@ -6,19 +6,31 @@ import { CreateLocationDto } from './dto/create-location.dto';
 export class LocationService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(search?: string) {
-    if (!search) {
-      return this.prisma.location.findMany();
+  async findAll(search?: string, category?: string) {
+    const where: any = {};
+
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        { category: { contains: search, mode: 'insensitive' } },
+      ];
     }
 
-    return this.prisma.location.findMany({
-      where: {
-        OR: [
-          { name: { contains: search, mode: 'insensitive' } },
-          { category: { contains: search, mode: 'insensitive' } },
-        ],
-      },
+    if (category) {
+      where.category = category;
+    }
+
+    return this.prisma.location.findMany({ where });
+  }
+
+  async findCategories() {
+    const result = await this.prisma.location.findMany({
+      select: { category: true },
+      distinct: ['category'],
+      orderBy: { category: 'asc' },
     });
+
+    return result.map((item) => item.category);
   }
 
   async create(data: CreateLocationDto) {

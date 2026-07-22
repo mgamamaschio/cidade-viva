@@ -13,17 +13,27 @@ interface Location {
 
 function App() {
   const [locations, setLocations] = useState<Location[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
   const [search, setSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
-    const url = search
-      ? `http://localhost:3000/locations?search=${encodeURIComponent(search)}`
-      : 'http://localhost:3000/locations';
+    fetch('http://localhost:3000/locations/categories')
+      .then((response) => response.json())
+      .then((data) => setCategories(data));
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (search) params.set('search', search);
+    if (selectedCategory) params.set('category', selectedCategory);
+
+    const url = `http://localhost:3000/locations?${params.toString()}`;
 
     fetch(url)
       .then((response) => response.json())
       .then((data) => setLocations(data));
-  }, [search]);
+  }, [search, selectedCategory]);
 
   return (
     <main className="page">
@@ -42,6 +52,28 @@ function App() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+      </div>
+
+      <div className="filter-bar" role="group" aria-label="Filtrar por categoria">
+        <button
+          type="button"
+          className={selectedCategory === null ? 'filter-pill active' : 'filter-pill'}
+          onClick={() => setSelectedCategory(null)}
+          aria-pressed={selectedCategory === null}
+        >
+          Todas
+        </button>
+        {categories.map((category) => (
+          <button
+            type="button"
+            key={category}
+            className={selectedCategory === category ? 'filter-pill active' : 'filter-pill'}
+            onClick={() => setSelectedCategory(category)}
+            aria-pressed={selectedCategory === category}
+          >
+            {category}
+          </button>
+        ))}
       </div>
 
       <div className="location-list">
@@ -64,7 +96,7 @@ function App() {
         ))}
 
         {locations.length === 0 && (
-          <p className="empty-state">Nenhum local encontrado para essa busca.</p>
+          <p className="empty-state">Nenhum local encontrado.</p>
         )}
       </div>
     </main>
