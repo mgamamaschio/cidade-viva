@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
 interface Location {
   id: string;
@@ -79,6 +80,22 @@ function LocationDetail() {
             ))}
           </div>
         )}
+
+        <div className="map-wrapper">
+          <MapContainer
+            center={[location.latitude, location.longitude]}
+            zoom={16}
+            style={{ height: '300px', width: '100%', borderRadius: '12px' }}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker position={[location.latitude, location.longitude]}>
+              <Popup>{location.name}</Popup>
+            </Marker>
+          </MapContainer>
+        </div>
       </article>
     </main>
   );

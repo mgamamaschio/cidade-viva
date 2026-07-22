@@ -212,3 +212,36 @@ h1 {
   color: #666;
   margin: 16px 0 8px;
 }
+.map-wrapper {
+  margin-top: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.view-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  padding: 8px 16px;
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #333;
+  cursor: pointer;
+}
+
+.toggle-btn:hover {
+  background: #f5f5f5;
+}
+
+.toggle-btn.active {
+  background: #0c447c;
+  color: #ffffff;
+  border-color: #0c447c;
+}
