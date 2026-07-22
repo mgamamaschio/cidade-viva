@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './App.css';
 
 interface Location {
   id: string;
@@ -20,18 +21,30 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <main className="page">
       <h1>Cidade Viva</h1>
-      <ul>
+      <p className="subtitle">Locais acessíveis e sustentáveis em Salto</p>
+
+      <div className="location-list">
         {locations.map((location) => (
-          <li key={location.id}>
-            <strong>{location.name}</strong> — {location.category}
-            <br />
-            {location.address}
-          </li>
+          <article className="location-card" key={location.id}>
+            <div className="location-card-header">
+              <h2>{location.name}</h2>
+              <span className="category-tag">{location.category}</span>
+            </div>
+
+            {location.description && (
+              <p className="description">{location.description}</p>
+            )}
+
+            <div className="address">
+              <i className="ti ti-map-pin" aria-hidden="true"></i>
+              <span>{location.address}</span>
+            </div>
+          </article>
         ))}
-      </ul>
-    </div>
+      </div>
+    </main>
   );
 }
 
