@@ -33,6 +33,10 @@ export class LocationService {
     return result.map((item) => item.category);
   }
 
+  async findOne(id: string) {
+    return this.prisma.location.findUnique({ where: { id } });
+  }
+
   async create(data: CreateLocationDto) {
     return this.prisma.location.create({ data });
   }
